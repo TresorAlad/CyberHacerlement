@@ -1,0 +1,243 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  VICTIM
+  MODERATOR
+  PSYCHOLOGIST
+  LAWYER
+  ADMIN
+}
+
+enum ReportStatus {
+  NEW
+  IN_REVIEW
+  NEED_INFO
+  ASSIGNED
+  RESOLVED
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum EvidenceKind {
+  IMAGE
+  VIDEO
+  AUDIO
+  URL
+  TEXT
+  OTHER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  name          String?
+  image         String?
+  role          Role      @default(VICTIM)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  expertProfile ExpertProfile?
+
+  reportsCreated Report[] @relation("ReportReporter")
+  reportsAssignedModerator Report[] @relation("ReportModerator")
+  reportsAssignedPsychologist Report[] @relation("ReportPsychologist")
+  reportsAssignedLawyer Report[] @relation("ReportLawyer")
+
+  messagesSent Message[] @relation("MessageSender")
+  notifications Notification[]
+  auditLogs AuditLog[] @relation("AuditActor")
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([providerId, accountId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@map("verification")
+}
+
+model ExpertProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reports Report[]
+}
+
+model Report {
+  id          String        @id @default(cuid())
+  publicId  String        @unique @default(cuid())
+
+  reporterUserId String?
+  reporter       User?      @relation("ReportReporter", fields: [reporterUserId], references: [id], onDelete: SetNull)
+
+  isAnonymous Boolean @default(false)
+  displayName String?
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  harassmentType String
+  description    String
+  occurredAt     DateTime?
+  platform       String?
+
+  region String?
+
+  status   ReportStatus @default(NEW)
+  priority Priority     @default(MEDIUM)
+
+  assignedModeratorId String?
+  assignedModerator   User?   @relation("ReportModerator", fields: [assignedModeratorId], references: [id], onDelete: SetNull)
+
+  assignedPsychologistId String?
+  assignedPsychologist   User?   @relation("ReportPsychologist", fields: [assignedPsychologistId], references: [id], onDelete: SetNull)
+
+  assignedLawyerId String?
+  assignedLawyer   User?   @relation("ReportLawyer", fields: [assignedLawyerId], references: [id], onDelete: SetNull)
+
+  aiScore        Int?
+  aiUrgent       Boolean @default(false)
+  aiSummary      String?
+  aiDisclaimer   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  evidences Evidence[]
+  messages  Message[]
+  notifications Notification[]
+  auditLogs AuditLog[]
+}
+
+model Evidence {
+  id       String       @id @default(cuid())
+  reportId String
+  report   Report       @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  kind EvidenceKind
+
+  url  String?
+  text String?
+
+  fileName   String?
+  mimeType   String?
+  sizeBytes  Int?
+  sha256     String?
+  storageKey String?
+
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id       String @id @default(cuid())
+  reportId String
+  report   Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  senderUserId String?
+  sender       User?   @relation("MessageSender", fields: [senderUserId], references: [id], onDelete: SetNull)
+
+  senderRole Role
+  body       String
+
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  reportId String?
+  report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  title String
+  body  String?
+  read  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id String @id @default(cuid())
+
+  actorUserId String?
+  actor       User?   @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  reportId String?
+  report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  action   String
+  metadata Json?
+
+  createdAt DateTime @default(now())
+}

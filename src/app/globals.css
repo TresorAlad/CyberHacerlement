@@ -1,0 +1,228 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-surface: var(--surface);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  --background: #f9f9f9;
+  --foreground: #262626;
+  --card: #ffffff;
+  --card-foreground: #262626;
+  --popover: #ffffff;
+  --popover-foreground: #262626;
+  --surface: #ffffff;
+  --primary: #007aff;
+  --primary-foreground: #ffffff;
+  --secondary: #efefef;
+  --secondary-foreground: #262626;
+  --muted: #efefef;
+  --muted-foreground: #6b7280;
+  --accent: #5ac8fa;
+  --accent-foreground: #262626;
+  --destructive: #dc2626;
+  --border: #e5e7eb;
+  --input: #d1d5db;
+  --ring: #007aff;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 1rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #262626;
+  --sidebar-primary: #007aff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #efefef;
+  --sidebar-accent-foreground: #262626;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #007aff;
+}
+
+.dark {
+  --background: #0b0f19;
+  --foreground: #f9fafb;
+  --card: #111827;
+  --card-foreground: #f9fafb;
+  --popover: #111827;
+  --popover-foreground: #f9fafb;
+  --surface: #111827;
+  --primary: #007aff;
+  --primary-foreground: #ffffff;
+  --secondary: #1f2937;
+  --secondary-foreground: #f9fafb;
+  --muted: #111827;
+  --muted-foreground: #9ca3af;
+  --accent: #5ac8fa;
+  --accent-foreground: #0b0f19;
+  --destructive: #dc2626;
+  --border: #1f2937;
+  --input: #374151;
+  --ring: #007aff;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: #111827;
+  --sidebar-foreground: #f9fafb;
+  --sidebar-primary: #007aff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1f2937;
+  --sidebar-accent-foreground: #f9fafb;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #007aff;
+}
+
+/* Espace connecté victime / admin - thème sombre professionnel (inspiré dashboard analytique) */
+.dash-professional.dark {
+  --background: #0b0e14;
+  --foreground: #f1f5f9;
+  --card: #12161f;
+  --surface: #12161f;
+  --card-foreground: #f1f5f9;
+  --popover: #161b26;
+  --popover-foreground: #f1f5f9;
+  --primary: #a855f7;
+  --primary-foreground: #faf5ff;
+  --secondary: #1e2430;
+  --secondary-foreground: #e2e8f0;
+  --muted: #1a1f2e;
+  --muted-foreground: #94a3b8;
+  --accent: #22d3ee;
+  --accent-foreground: #0b0e14;
+  --destructive: #f87171;
+  --border: rgba(148, 163, 184, 0.14);
+  --input: rgba(148, 163, 184, 0.22);
+  --ring: #c084fc;
+  --chart-1: #e879f9;
+  --chart-2: #a855f7;
+  --chart-3: #6366f1;
+  --chart-4: #22d3ee;
+  --chart-5: #fb923c;
+  --sidebar: #0d1118;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #a855f7;
+  --sidebar-primary-foreground: #faf5ff;
+  --sidebar-accent: #1a1f2e;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: rgba(148, 163, 184, 0.12);
+  --sidebar-ring: #c084fc;
+  --radius: 0.875rem;
+}
+
+/* Page auth : fond = background du thème + halos primary / secondary / accent */
+.auth-page-root {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 100% 72% at 50% -18%, color-mix(in oklab, var(--primary) 16%, transparent), transparent 55%),
+    radial-gradient(ellipse 78% 58% at 100% 8%, color-mix(in oklab, var(--secondary) 24%, transparent), transparent 52%),
+    radial-gradient(ellipse 72% 52% at 0% 58%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 50%),
+    linear-gradient(
+      172deg,
+      color-mix(in oklab, var(--primary) 8%, var(--background)),
+      var(--background) 52%,
+      color-mix(in oklab, var(--secondary) 10%, var(--background))
+    );
+}
+
+/* Colonne décorative split auth : dégradés 100 % tokens (clair / sombre) */
+.auth-split-aside-base {
+  background: linear-gradient(
+    155deg,
+    color-mix(in oklab, var(--foreground) 88%, var(--primary) 12%),
+    color-mix(in oklab, var(--primary) 58%, var(--foreground) 42%),
+    color-mix(in oklab, var(--accent) 52%, var(--primary) 48%)
+  );
+}
+
+.dark .auth-split-aside-base {
+  background: linear-gradient(
+    155deg,
+    color-mix(in oklab, var(--background) 52%, var(--primary) 48%),
+    color-mix(in oklab, var(--primary) 48%, var(--secondary) 52%),
+    color-mix(in oklab, var(--accent) 46%, var(--primary) 54%)
+  );
+}
+
+/* Voile glassmorphism auth (surcouche tokenisée) */
+.auth-split-glass {
+  background: color-mix(in oklab, var(--card) 8%, transparent);
+  border-right: 1px solid color-mix(in oklab, var(--primary-foreground) 12%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.marketing-hero-bg {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 115% 85% at 50% -35%, rgba(0, 122, 255, 0.12), transparent 58%),
+    radial-gradient(ellipse 75% 55% at 100% 5%, rgba(90, 200, 250, 0.1), transparent 52%),
+    radial-gradient(ellipse 70% 50% at 0% 60%, rgba(0, 122, 255, 0.06), transparent 48%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@keyframes indeterminate {
+  0%   { transform: translateX(-100%) scaleX(1); }
+  40%  { transform: translateX(0%)    scaleX(2.5); }
+  100% { transform: translateX(300%)  scaleX(0.5); }
+}
